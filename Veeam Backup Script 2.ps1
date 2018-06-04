@@ -56,6 +56,13 @@ if($day -eq "Sunday"){
     $VMs = @("OfficeServer2")
     runBackup($VMs,0)
 }Else{
-    Write-Output "Today's Day didn't work"
-    Write-Output "Today's Day didn't work" >> $logName
+    #if the day doesn't work, backing up all VMs to be safe
+    $VMs = Get-VM
+    $list = @()
+    foreach($VM in $VMs){
+        $list += $VM.Name
+    }
+    runBackup($VMs,20)
+    Write-Output "Today's Day didn't work, so backing them all up"
+    Write-Output "Today's Day didn't work, so backing them all up, better safe than sorry" >> $logName
 }
